@@ -633,6 +633,17 @@ class TimeSkill(MycroftSkill):
             weekday = day.strftime("%A")
         return weekday.capitalize()
 
+    def get_abbr_weekday(self, day=None, location=None):
+        if not day:
+            day = self.get_local_datetime(location)
+        if self.lang in date_time_format.lang_config.keys():
+            localized_abbr_day_names = list(
+                 date_time_format.lang_config[self.lang]['abbr_weekday'].values())
+            abbr_weekday = localized_abbr_day_names[day.abbr_weekday()]
+        else:
+            abbr_weekday = day.strftime("%a")
+        return abbr_weekday
+
     def get_month_date(self, day=None, location=None):
         if not day:
             day = self.get_local_datetime(location)
@@ -646,6 +657,16 @@ class TimeSkill(MycroftSkill):
             return "{} {}".format(month, day.strftime("%d"))
         else:
             return "{} {}".format(day.strftime("%d"), month)
+
+    def get_abbr_month_date(self, day=None, location=None):
+        if not day:
+            day = self.get_local_datetime(location)
+        if self.lang in date_time_format.lang_config.keys():
+            localized_abbr_month_names = date_time_format.lang_config[self.lang]['abbr_month']
+            abbr_month = localized_abbr_month_names[str(int(day.strftime("%m")))]
+        else:
+            abbr_month = day.strftime("%b")
+        return abbr_month
 
     def get_year(self, day=None, location=None):
         if not day:
